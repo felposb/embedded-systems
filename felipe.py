@@ -18,13 +18,21 @@ def hora():
   return datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 def registrar_temp(temperatura):
   temperaturas = carregar(TEMP)
+  
   nova_temp = {
     'temperatura': temperatura,
     'horario': hora()
   }
   temperaturas.append(nova_temp)
   salvar(TEMP, temperaturas)
+print("Começando...")
 while True:
-  temperatura = arduino.readline().decode().strip()
-  if temperatura:
-    registrar_temp(temperatura)
+  leitura = arduino.readline().decode().strip()
+  if leitura:
+    try:
+      temperatura = float(leitura)
+      print(f"Temperatura recebida: {temperatura:.2f}" )
+      registrar_temp(temperatura)
+    except ValueError:
+      print("Temperatura não recebe esse valor")
+      
